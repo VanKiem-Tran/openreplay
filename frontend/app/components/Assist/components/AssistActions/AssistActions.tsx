@@ -53,7 +53,7 @@ function AssistActions({ toggleChatWindow, userId, calling, annotating, peerConn
     }    
   }, [peerConnectionStatus]);
 
-  const addIncomeStream = (stream: MediaStream) => setIncomeStream((prev) => [...prev, stream]);
+  const addIncomeStream = (stream: MediaStream) => setIncomeStream([...incomeStream, stream]);
 
   function call() {
     RequestLocalStream().then(lStream => {

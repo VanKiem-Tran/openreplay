@@ -20,6 +20,8 @@ const ChatWindow: FC<Props> = function ChatWindow({ userId, incomeStream, localS
   const [localVideoEnabled, setLocalVideoEnabled] = useState(false)
   const [remoteVideoEnabled, setRemoteVideoEnabled] = useState(false)
 
+  console.log(incomeStream)
+
   useEffect(() => {
     if (!incomeStream) { return }
     const iid = setInterval(() => {
@@ -46,7 +48,7 @@ const ChatWindow: FC<Props> = function ChatWindow({ userId, incomeStream, localS
           <Counter startTime={new Date().getTime() } className="text-sm ml-auto" />
         </div>
         <div className={cn(stl.videoWrapper, {'hidden' : minimize}, 'relative')}>
-          {incomeStream.map(stream => <VideoContainer stream={ stream } />)}
+          {incomeStream && incomeStream.map(stream => <VideoContainer stream={ stream } />)}
           <div className="absolute bottom-0 right-0 z-50">
             <VideoContainer stream={ localStream ? localStream.stream : null } muted width={50} />
           </div>

@@ -36,6 +36,7 @@ enum CallingState {
   Requesting,
   True,
   False,
+  StreamAdded,
 };
 
 
@@ -292,8 +293,8 @@ export default class Assist {
       app.debug.log("Call: ", call)    
       
       if (this.callingState === CallingState.True) {
+        console.log('could be new call')
         call.on('stream', (stream) => {
-          console.log('could be new call')
           callUI?.addRemoteStream(stream)
           return call.answer(lStream.stream)
         })
@@ -356,10 +357,10 @@ export default class Assist {
         });
 
         call.on('stream', (rStream) => {
-          if (this.callingState === CallingState.True) {
+          if (this.callingState === CallingState.StreamAdded) {
             console.log('inside old call?')
-            callUI?.addRemoteStream(rStream)
-            return call.answer(lStream.stream)
+            return callUI?.addRemoteStream(rStream)
+            // return call.answer(lStream.stream)
           }
           callUI?.setRemoteStream(rStream);
           const onInteraction = () => { // only if hidden?
@@ -367,6 +368,9 @@ export default class Assist {
             document.removeEventListener("click", onInteraction)
           }
           document.addEventListener("click", onInteraction)
+
+          console.log('hi')
+          setCallingState(CallingState.StreamAdded)
         });
 
         lStream.onVideoTrack(vTrack => {
